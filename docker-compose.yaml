@@ -6,13 +6,10 @@ services:
     volumes:
       - ./sql_db/db:/var/lib/mysql  
     restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: somewordpress
-      MYSQL_DATABASE: wordpress
-      MYSQL_USER: wordpress
-      MYSQL_PASSWORD: wordpress
     networks:
       - wp-network
+    env_file:
+      - ./database/.env
 
   wordpress:
     build:
@@ -25,13 +22,10 @@ services:
     ports:
       - "8000:80"
     restart: always
-    environment:
-      WORDPRESS_DB_HOST: db:3306
-      WORDPRESS_DB_USER: wordpress
-      WORDPRESS_DB_PASSWORD: wordpress
-      WORDPRESS_DB_NAME: wordpress
     networks:
       - wp-network
+    env_file:
+      - ./wordpress/.env
     
 
   phpmyadmin:
@@ -41,13 +35,10 @@ services:
     ports:
       - "8081:80"
     restart: always
-    environment:
-      PMA_HOST: db
-      PMA_USER: root
-      PMA_PASSWORD: somewordpress
-      MYSQL_ROOT_PASSWORD: somewordpress
     networks:
       - wp-network
+    env_file:
+      - ./phpmyadmin/.env
 
 networks:
   wp-network:
