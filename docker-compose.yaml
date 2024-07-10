@@ -46,8 +46,6 @@ services:
       PMA_USER: root
       PMA_PASSWORD: somewordpress
       MYSQL_ROOT_PASSWORD: somewordpress
-    volumes:
-      - ./phpmyadmin_db/uploads:/var/www/html/wp-content/uploads  
     networks:
       - wp-network
 
