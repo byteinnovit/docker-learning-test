@@ -1,1 +1,3 @@
 .idea
+sql_db/db/mysql.sock
+sql_db/db/*.sock

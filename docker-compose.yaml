@@ -4,20 +4,24 @@ services:
   db:
     image: mysql:5.7
     volumes:
-      - db_data:/var/lib/mysql
+      - ./sql_db/db:/var/lib/mysql  
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: somewordpress
       MYSQL_DATABASE: wordpress
       MYSQL_USER: wordpress
       MYSQL_PASSWORD: wordpress
-  
+    networks:
+      - wp-network
+
   wordpress:
     build:
       context: ./wordpress
     depends_on:
       - db
     image: wordpress:latest
+    volumes:
+      - ./wordpress_db/uploads:/var/www/html/wp-content/uploads  
     ports:
       - "8000:80"
     restart: always
@@ -26,6 +30,9 @@ services:
       WORDPRESS_DB_USER: wordpress
       WORDPRESS_DB_PASSWORD: wordpress
       WORDPRESS_DB_NAME: wordpress
+    networks:
+      - wp-network
+    
 
   phpmyadmin:
     build:
@@ -39,6 +46,10 @@ services:
       PMA_USER: root
       PMA_PASSWORD: somewordpress
       MYSQL_ROOT_PASSWORD: somewordpress
+    volumes:
+      - ./phpmyadmin_db/uploads:/var/www/html/wp-content/uploads  
+    networks:
+      - wp-network
 
-volumes:
-  db_data: {}
+networks:
+  wp-network:
