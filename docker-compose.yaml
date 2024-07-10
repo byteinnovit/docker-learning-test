@@ -1,0 +1,40 @@
+version: '3'
+services:
+  # Service de bases de données
+  db:
+    image: mysql:5.7
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: always
+    env_file:
+      - .env
+
+# Service Wordpress
+  wordpress:
+    build:
+      context: ./wordpress
+    image: wordpress:latest
+    depends_on:
+      - db
+    ports:
+      - "8000:80"
+    restart: always
+    env_file:
+      - .env
+
+# Service phpmyadmin
+  phpmyadmin:
+    build:
+      context: ./phpmyadmin
+    ports:
+      - "8080:80"
+    image: phpmyadmin/phpmyadmin
+    depends_on:
+      - db
+    env_file:
+      - .env
+    
+
+volumes:
+  db_data: {}
+    
