@@ -1,0 +1,48 @@
+version: '3'
+services:
+  db:
+    image: mysql:5.7
+    volumes:
+      - ./sql_data/db_data:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    env_file:
+      - ./.env
+    
+  wordpress:
+    depends_on:
+      - db
+    build:
+      context: ./wordpress
+      dockerfile: Dockerfile
+    ports:
+      - "8001:80"
+    restart: always
+    environment:
+      WORDPRESS_DB_HOST: ${WORDPRESS_DB_HOST}
+      WORDPRESS_DB_USER: ${WORDPRESS_DB_USER}
+      WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASSWORD}
+      WORDPRESS_DB_NAME: ${WORDPRESS_DB_NAME}
+    volumes:
+      - ./wdp_file/uploads:/var/www/html/wp-content/uploads
+    env_file:
+      - ./.env
+
+  phpmyadmin:
+    depends_on:
+      - db
+    build:
+      context: ./phpmyadmin
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+    restart: always
+    environment:
+      PMA_HOST: ${PMA_HOST}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    env_file:
+      - ./.env
