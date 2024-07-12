@@ -1,1 +1,8 @@
 .idea
+
+./db_environment/.env
+./mysql_environment/.env
+./wordpress_environment/.env
+
+./db_data
+./wordpress_data
