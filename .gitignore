@@ -1,1 +1,6 @@
 .idea
+
+.env
+
+db_data
+wordpress_data
